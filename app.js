@@ -33,31 +33,31 @@ server.listen(port, hostname, () => {
 });
 
 
-app = express();
+// app = express();
 
 cron.schedule("* * * * *", function() {
     console.log("start running a task every minute");
 
-    https.get('https://nodejs-hostname-service', (resp) => {
-        console.log("calling https://nodejs-hostname-service");
+    const options = {
+        hostname: 'nodejs-hostname-service',
+        port: 8080,
+        path: '/',
+        method: 'GET'
+    }
 
-        let data = '';
+    const req = https.request(options, res => {
+        console.log(`statusCode: ${res.statusCode}`)
 
-        // A chunk of data has been recieved.
-        resp.on('data', (chunk) => {
-            data += chunk;
-        });
+        res.on('data', d => {
+            process.stdout.write(d)
+        })
+    })
 
-        // The whole response has been received. Print out the result.
-        resp.on('end', () => {
-            console.log(data);
-        });
+    req.on('error', error => {
+        console.error(error)
+    })
 
-        console.log(data);
-
-    }).on("error", (err) => {
-        console.log("Error: " + err.message);
-    });
+    req.end()
 
     console.log("running a task every minute");
 });
