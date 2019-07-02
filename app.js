@@ -1,5 +1,4 @@
 const cron = require('node-cron');
-const express = require('express');
 const http = require('http');
 const axios = require('axios');
 
@@ -33,73 +32,23 @@ server.listen(port, hostname, () => {
 });
 
 
-app = express();
 
-cron.schedule( "* * * * *" , function() {
-
+cron.schedule( "*/2 * * * * *" , function() {
     console.log("start running a task every minute");
 
     axios.all([
-        axios.get('http://nodejs-hostname-service:8080'),
-        axios.get('http://python-hostname-service:8080'),
-        axios.get('http://php-hostname-service:8080')
+        axios.get( 'http://nodejs-hostname-service:8080' ),
+        axios.get( 'http://python-hostname-service:8080' ),
+        axios.get( 'http://php-hostname-service:8080' )
     ]).then(axios.spread((response1, response2, response3) => {
-        callsResult = callsResult + '<br/>' + response1.data;
-        callsResult = callsResult + '<br/>' + response2.data;
-        callsResult = callsResult + '<br/>' + response3.data;
-
-        console.log(response1.data.url);
-        console.log(response2.data.body);
+        callsResult =
+            callsResult + '<br/>' +
+            response1.data + '<br/>' +
+            response2.data + '<br/>' +
+            response3.data;
     })).catch(error => {
         console.log(error);
     });
-
-
-
-
-
-
-    // http.get('http://nodejs-hostname-service:8080', (resp) => {
-    //     let data = '';
-    //
-    //     resp.on('data', (chunk) => {
-    //         data += chunk;
-    //     });
-    //
-    //     resp.on('end', () => {
-    //         callsResult = callsResult + '<br/>' + data;
-    //     });
-    // }).on("error", (err) => {
-    //     console.log("Error: " + err.message);
-    // });
-    //
-    // http.get('http://php-hostname-service:8080', (resp) => {
-    //     let data = '';
-    //
-    //     resp.on('data', (chunk) => {
-    //         data += chunk;
-    //     });
-    //
-    //     resp.on('end', () => {
-    //         callsResult = callsResult + '<br/>' + data;
-    //     });
-    // }).on("error", (err) => {
-    //     console.log("Error: " + err.message);
-    // });
-    //
-    // http.get('http://python-hostname-service:8080', (resp) => {
-    //     let data = '';
-    //
-    //     resp.on('data', (chunk) => {
-    //         data += chunk;
-    //     });
-    //
-    //     resp.on('end', () => {
-    //         callsResult = callsResult + '<br/>' + data;
-    //     });
-    // }).on("error", (err) => {
-    //     console.log("Error: " + err.message);
-    // });
 
     console.log("running a task every minute");
 });
