@@ -2,6 +2,7 @@ const cron = require('node-cron');
 const express = require('express');
 // const fs = require('fs');
 const http = require('http');
+const https = require('https');
 
 const hostname = '0.0.0.0';
 const port = 8080;
@@ -37,8 +38,8 @@ app = express();
 cron.schedule("* * * * *", function() {
     console.log("start running a task every minute");
 
-    http.get('http://nodejs-hostname-service', (resp) => {
-        console.log("calling http://nodejs-hostname-service");
+    https.get('https://nodejs-hostname-service', (resp) => {
+        console.log("calling https://nodejs-hostname-service");
 
         let data = '';
 
