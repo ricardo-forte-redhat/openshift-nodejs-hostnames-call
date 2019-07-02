@@ -39,12 +39,10 @@ cron.schedule("* * * * *", function() {
     http.get('http://nodejs-hostname-service:8080', (resp) => {
         let data = '';
 
-        // A chunk of data has been recieved.
         resp.on('data', (chunk) => {
             data += chunk;
         });
 
-        // The whole response has been received. Print out the result.
         resp.on('end', () => {
             callsResult = callsResult + '<br/>' + data;
         });
@@ -52,43 +50,33 @@ cron.schedule("* * * * *", function() {
         console.log("Error: " + err.message);
     });
 
-    // http.get('http://php-hostname-service:8080', (resp) => {
-    //     let data = '';
-    //
-    //     // A chunk of data has been recieved.
-    //     resp.on('data', (chunk) => {
-    //         data += chunk;
-    //     });
-    //
-    //     // The whole response has been received. Print out the result.
-    //     resp.on('end', () => {
-    //         console.log(data);
-    //     });
-    //
-    //     console.log(data);
-    //
-    // }).on("error", (err) => {
-    //     console.log("Error: " + err.message);
-    // });
-    //
-    // http.get('http://python-hostname-service:8080', (resp) => {
-    //     let data = '';
-    //
-    //     // A chunk of data has been recieved.
-    //     resp.on('data', (chunk) => {
-    //         data += chunk;
-    //     });
-    //
-    //     // The whole response has been received. Print out the result.
-    //     resp.on('end', () => {
-    //         console.log(data);
-    //     });
-    //
-    //     console.log(data);
-    //
-    // }).on("error", (err) => {
-    //     console.log("Error: " + err.message);
-    // });
-    //
+    http.get('http://php-hostname-service:8080', (resp) => {
+        let data = '';
+
+        resp.on('data', (chunk) => {
+            data += chunk;
+        });
+
+        resp.on('end', () => {
+            callsResult = callsResult + '<br/>' + data;
+        });
+    }).on("error", (err) => {
+        console.log("Error: " + err.message);
+    });
+
+    http.get('http://python-hostname-service:8080', (resp) => {
+        let data = '';
+
+        resp.on('data', (chunk) => {
+            data += chunk;
+        });
+
+        resp.on('end', () => {
+            callsResult = callsResult + '<br/>' + data;
+        });
+    }).on("error", (err) => {
+        console.log("Error: " + err.message);
+    });
+
     console.log("running a task every minute");
 });
