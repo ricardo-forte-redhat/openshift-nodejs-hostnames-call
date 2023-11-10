@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "node-cron": "2.0.3",
-    "axios": "0.19.0"
+    "axios": "1.6.0"
   }
 }
